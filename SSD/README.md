@@ -16,9 +16,9 @@ trainer.py: 训练
 predictor.py: 预测
 
 train  
-'''bash
+```bash
 python main.py --model=train --dataset_file=xxx.tfrecord
-'''  
+```  
 
 ![](demo/example1.jpg)
 ![](demo/example2.jpg)
