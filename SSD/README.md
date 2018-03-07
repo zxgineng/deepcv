@@ -1,6 +1,6 @@
 SSD: Single Shot MultiBox Detector in TensorFlow  
 
-[论文地址] (https://arxiv.org/pdf/1512.02325.pdf)  
+[论文地址](https://arxiv.org/pdf/1512.02325.pdf)  
 
 模型核心思路:
 
