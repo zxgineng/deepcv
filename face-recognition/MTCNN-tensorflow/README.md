@@ -22,5 +22,5 @@ python main.py --file_name=xxx.jpg
 ```   
 
 
-![](demo/example1.jpg)
-![](demo/example2.jpg)
+![](example/example1.jpg)
+![](example/example2.jpg)
