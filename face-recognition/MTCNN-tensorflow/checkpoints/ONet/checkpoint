@@ -1,0 +1,2 @@
+model_checkpoint_path: "D:/CodeFiles/MTCNN/checkpoints/ONet/ONet"
+all_model_checkpoint_paths: "D:/CodeFiles/MTCNN/checkpoints/ONet/ONet"
