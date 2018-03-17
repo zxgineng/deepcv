@@ -78,31 +78,3 @@ class PNet():
     def init_saver(self):
         self.saver = tf.train.Saver(var_list=tf.global_variables('PNet'))
 
-if __name__ == '__main__':
-    x = tf.placeholder(tf.float32,[None,12,12,3])
-    model = PNet(x)
-    print(tf.global_variables('PNet'))
-    # var = tf.trainable_variables()
-    # # var = tf.global_variables()
-    # for i,a in enumerate(var):
-    #     print(i,a)
-    # data_dict = np.load('D:/download/facenet-master/facenet-master/src/align/det1.npy',encoding='latin1').item()
-    # saver1 = tf.train.Saver([var[13],var[14]])
-    # saver2 = tf.train.Saver()
-    # with tf.Session() as sess:
-    #     tf.global_variables_initializer().run()
-    #     saver1.restore(sess,'D:/CodeFiles/MTCNN-Tensorflow-origin/data/MTCNN_model/PNet_landmark/PNet-18')
-    #     sess.run(var[0].assign(data_dict['conv1']['weights']))
-    #     sess.run(var[1].assign(data_dict['conv1']['biases']))
-    #     sess.run(var[2].assign(data_dict['PReLU1']['alpha']))
-    #     sess.run(var[3].assign(data_dict['conv2']['weights']))
-    #     sess.run(var[4].assign(data_dict['conv2']['biases']))
-    #     sess.run(var[5].assign(data_dict['PReLU2']['alpha']))
-    #     sess.run(var[6].assign(data_dict['conv3']['weights']))
-    #     sess.run(var[7].assign(data_dict['conv3']['biases']))
-    #     sess.run(var[8].assign(data_dict['PReLU3']['alpha']))
-    #     sess.run(var[9].assign(data_dict['conv4-1']['weights']))
-    #     sess.run(var[10].assign(data_dict['conv4-1']['biases']))
-    #     sess.run(var[11].assign(data_dict['conv4-2']['weights']))
-    #     sess.run(var[12].assign(data_dict['conv4-2']['biases']))
-    #     saver2.save(sess,'D:/CodeFiles/MTCNN/checkpoints/PNet/PNet-18')

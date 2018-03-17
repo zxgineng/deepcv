@@ -74,32 +74,3 @@ class RNet():
     def init_saver(self):
         self.saver = tf.train.Saver(var_list=tf.global_variables('RNet'))
 
-if __name__ == '__main__':
-    x = tf.placeholder(tf.float32,[None,24,24,3])
-    model = RNet(x)
-    var = tf.trainable_variables()
-    for i,a in enumerate(tf.trainable_variables()):
-        print(i,a)
-    data_dict = np.load('D:/download/facenet-master/facenet-master/src/align/det2.npy',encoding='latin1').item()
-    saver1 = tf.train.Saver([var[16],var[17]])
-    saver2 = tf.train.Saver()
-    with tf.Session() as sess:
-        tf.global_variables_initializer().run()
-        saver1.restore(sess,'D:/CodeFiles/MTCNN-Tensorflow-origin/data/MTCNN_model/RNet_landmark/RNet-14')
-        sess.run(var[0].assign(data_dict['conv1']['weights']))
-        sess.run(var[1].assign(data_dict['conv1']['biases']))
-        sess.run(var[2].assign(data_dict['prelu1']['alpha']))
-        sess.run(var[3].assign(data_dict['conv2']['weights']))
-        sess.run(var[4].assign(data_dict['conv2']['biases']))
-        sess.run(var[5].assign(data_dict['prelu2']['alpha']))
-        sess.run(var[6].assign(data_dict['conv3']['weights']))
-        sess.run(var[7].assign(data_dict['conv3']['biases']))
-        sess.run(var[8].assign(data_dict['prelu3']['alpha']))
-        sess.run(var[9].assign(data_dict['conv4']['weights']))
-        sess.run(var[10].assign(data_dict['conv4']['biases']))
-        sess.run(var[11].assign(data_dict['prelu4']['alpha']))
-        sess.run(var[12].assign(data_dict['conv5-1']['weights']))
-        sess.run(var[13].assign(data_dict['conv5-1']['biases']))
-        sess.run(var[14].assign(data_dict['conv5-2']['weights']))
-        sess.run(var[15].assign(data_dict['conv5-2']['biases']))
-        saver2.save(sess,'D:/CodeFiles/MTCNN/checkpoints/RNet/RNet-14')
