@@ -56,7 +56,7 @@ def main(args):
                         print('%s: %.3f' % (class_names[best_class_indices[k]], best_class_probabilities[k]))
                         k+=1
                     cv2.imshow('test', img)
-                    cv2.imwrite('exmaple%d.jpg'%(i),img)
+                    cv2.imwrite('test%d.jpg'%(i),img)
                     cv2.waitKey()
                     cv2.destroyAllWindows()
 
