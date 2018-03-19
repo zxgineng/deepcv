@@ -142,6 +142,8 @@ class SSD():
             print("Loading latest model checkpoint {} ...".format(latest_checkpoint))
             self.saver.restore(sess, latest_checkpoint)
             print("Model loaded")
+        else:
+            print('No checkpoint!')
 
     def load(self, sess, check_point_file):
         print("Loading model checkpoint {} ...".format(check_point_file))
@@ -157,7 +159,3 @@ class SSD():
         self.saver = tf.train.Saver(var_list=var_list)
 
 
-if __name__ == '__main__':
-    x = tf.placeholder(tf.float32, [None, 300, 300, 3])
-    SSD(x)
-    print(tf.trainable_variables())

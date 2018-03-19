@@ -134,10 +134,6 @@ def rerec(bboxA):
     return bboxA
 
 
-# def imresample(img, sz):
-#     im_data = cv2.resize(img, (sz[1], sz[0]), interpolation=cv2.INTER_AREA)  # @UndefinedVariable
-#     return im_data
-
 
 
 def run_mtcnn(img,minsize,threshold, factor):

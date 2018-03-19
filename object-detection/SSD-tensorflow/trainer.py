@@ -5,8 +5,6 @@ class Trainer():
     def __init__(self,sess,model_c,input,target):
         self.model = model_c(input,target)
         self.sess = sess
-        # self.input=input
-        # self.target = target
         self.init = tf.group(tf.global_variables_initializer(),tf.local_variables_initializer())
         self.sess.run(self.init)
 
