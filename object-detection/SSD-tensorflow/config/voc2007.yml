@@ -1,0 +1,65 @@
+data:
+  base_path: 'data/'
+  raw_data_path: 'VOC2007'
+  processed_path: 'processed_VOC2007'
+  directory_annotations: 'Annotations/'
+  directory_images: 'JPEGImages/'
+  samples_per_tfrecord: 1000
+  num_classes: 21
+  voc_labels:
+    none: 0
+    aeroplane: 1
+    bicycle: 2
+    bird: 3
+    boat: 4
+    bottle: 5
+    bus: 6
+    car: 7
+    cat: 8
+    chair: 9
+    cow: 10
+    diningtable: 11
+    dog: 12
+    horse: 13
+    motorbike: 14
+    person: 15
+    pottedplant: 16
+    sheep: 17
+    sofa: 18
+    train: 19
+    tvmonitor: 20
+
+model:
+  image_shape: [300,300]
+  feat_layers: ["block4", "block7", "block8", "block9", "block10", "block11"]
+  feat_shape: [[38, 38], [19, 19], [10, 10], [5, 5], [3, 3], [1, 1]]
+  anchor_sizes_bounds: [0.15, 0.90]
+  anchor_sizes: [[21, 45],[45, 99],[99,153],[153, 207],[207, 261],[261, 315]]
+  anchor_steps: [8, 16, 32, 64, 100, 300]
+  anchor_offset: 0.5
+  normalizations: [1, -1, -1, -1, -1, -1]
+  prior_scaling: [0.1, 0.1, 0.2, 0.2]
+  anchor_ratios: [[2,0.5],[2,0.5,3,0.33],[2,0.5,3,0.33],[2,0.5,3,0.33],[2,0.5],[2,0.5]]
+
+  batch_size: 32
+
+train:
+  negative_ratio: 3.0
+  alpha: 1.0
+  learning_rate: 0.001
+  learning_decay_steps: 2000
+  learning_decay_rate: 0.9
+  optimizer: 'Adam'
+
+  max_steps: 100000
+  model_dir: 'logs/VOC2007'
+
+  save_checkpoints_steps: 500
+  check_hook_n_iter: 100
+
+  debug: False
+
+predict:
+  select_threshold: 0.5
+  nms_threshold: 0.45
+

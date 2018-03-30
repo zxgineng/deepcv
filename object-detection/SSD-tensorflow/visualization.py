@@ -1,5 +1,5 @@
 import random
-from config import VOC_LABELS
+from utils import Config
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpcm
 import cv2
@@ -91,7 +91,7 @@ def plt_bboxes(img, classes, scores, bboxes, figsize=(10,10), linewidth=1.5):
                                  edgecolor=colors[cls_id],
                                  linewidth=linewidth)
             plt.gca().add_patch(rect)
-            id_to_cls = dict(zip(VOC_LABELS.values(),VOC_LABELS.keys()))
+            id_to_cls = dict(zip(Config.data.voc_labels.values(),Config.data.voc_labels.keys()))
             class_name = id_to_cls[cls_id]
             plt.gca().text(xmin, ymin - 2,
                            '{:s} | {:.3f}'.format(class_name, score),
