@@ -1,6 +1,6 @@
 # SSD 
 
-TensorFlow implementation of [SSD: Single Shot MultiBox Detector](https://arxiv.org/pdf/1408.5882.pdf). (2015. 12)
+TensorFlow implementation of [SSD: Single Shot MultiBox Detector](https://arxiv.org/pdf/1512.02325.pdf). (2015. 12)
 
 ![images](images/architecture1.png)
 
