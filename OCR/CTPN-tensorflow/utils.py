@@ -1,7 +1,6 @@
 import yaml
 import json
 
-
 class ConfigMeta(type):
     class __ConfigMeta:
 
@@ -100,5 +99,17 @@ class SubConfig:
 
     def __repr__(self):
         return json.dumps(self.__dict__["__dict__"], indent=4)
+
+
+# import cv2
+# import numpy as np
+# import matplotlib.pyplot as plt
+#
+# def hook_formatter(values):
+#     # image =values['image']
+#     image = values['image'].astype(np.uint8)
+#
+#
+#     return image.shape
 
 

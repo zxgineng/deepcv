@@ -3,7 +3,7 @@
 
 import tensorflow as tf
 import numpy as np
-from predictor import predictor_utils
+from predict import predictor_utils
 from data_reader import reader_utils
 import os
 import math

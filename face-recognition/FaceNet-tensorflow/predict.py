@@ -4,7 +4,7 @@
 import tensorflow as tf
 import numpy as np
 import argparse
-from predictor import predictor_utils
+from predict import predictor_utils
 import os
 import sys
 import pickle
@@ -12,7 +12,7 @@ from scipy import misc
 from data_reader import detect_face
 from six.moves import xrange
 import cv2
-from predictor import classifier
+from predict import classifier
 
 def main(args):
 

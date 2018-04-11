@@ -1,7 +1,6 @@
 import yaml
 import json
 
-
 class ConfigMeta(type):
     class __ConfigMeta:
 
