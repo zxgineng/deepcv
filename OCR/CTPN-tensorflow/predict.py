@@ -64,14 +64,14 @@ def anchors_select(scores_softmax,coords,anchors):
     def decode_coords(coords,anchors):
         """decode"""
         cy, cx, h, w = anchors
-        new_coords = np.zeros([coords.shape[0],coords.shape[1].coords.shape[2],4])
+        new_coords = np.zeros([coords.shape[0],coords.shape[1],coords.shape[2],4])
         cy = coords[:,:,:,0] * h + cy
-        h = np.exp(coords[:,:,:1]) * h
+        h = np.exp(coords[:,:,:,1]) * h
         # [ymin,xmin,ymax,xmax]
-        new_coords[:,:,:,0] = cx - h/2
-        new_coords[:,:,:,1] = cy - w/2
-        new_coords[:,:,:,2] = cx + h/2
-        new_coords[:,:,:,3] = cy + w/2
+        new_coords[:,:,:,0] = cy - h/2
+        new_coords[:,:,:,1] = cx - w/2
+        new_coords[:,:,:,2] = cy + h/2
+        new_coords[:,:,:,3] = cx + w/2
         return new_coords
 
     positive_prob = scores_softmax[:,:,:,1]
