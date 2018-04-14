@@ -1,21 +1,20 @@
 import argparse
 import tensorflow as tf
 from tensorflow.python import debug as tf_debug
-import math
 
 import data_loader
 from model import Model
-from utils import Config,hook_formatter
+from utils import Config
 
 
 def run(mode, run_config, params):
     model = Model()
-    ws = tf.estimator.WarmStartSettings(ckpt_to_initialize_from='logs/pretrained/vgg_16.ckpt',vars_to_warm_start='vgg_16.*')
+    # ws = tf.estimator.WarmStartSettings(ckpt_to_initialize_from='logs/pretrained/vgg_16.ckpt',vars_to_warm_start='vgg_16.*')
     estimator = tf.estimator.Estimator(
         model_fn=model.model_fn,
         model_dir=Config.train.model_dir,
         params=params,
-        warm_start_from=ws,
+        # warm_start_from=ws,
         config=run_config)
 
     if Config.train.debug:
@@ -28,11 +27,7 @@ def run(mode, run_config, params):
                                              'xentropy_loss': 'loss/xentropy_loss/truediv:0',
                                              'reg_loss': 'loss/reg_loss/truediv:0',
                                              'side_loss': 'loss/side_loss/truediv:0',
-                                             'pred':"loss/ArgMax:0",
-                                             'labels': "Squeeze_2:0",
-                                             'pindex': "loss/TopKV2:1",
-                                             'nindex': "loss/TopKV2_1:1",
-                                             'step': 'global_step:0'}, every_n_iter=Config.train.check_hook_n_iter,formatter=hook_formatter)
+                                             'step': 'global_step:0'}, every_n_iter=Config.train.check_hook_n_iter)
 
     if mode == 'train':
         train_data = data_loader.get_tfrecord(mode, shuffle=True)

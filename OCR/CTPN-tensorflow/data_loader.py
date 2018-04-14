@@ -63,7 +63,6 @@ def process_anchors_coords(shape, coords):
         divided_coords = []
 
         for coord in coords:
-            # cv2.polylines(image_data,np.array([[[coord[0],coord[1]],[coord[2],coord[3]],[coord[4],coord[5]],[coord[6],coord[7]]]]).astype(int),1, 255)
             up_slope = (coord[1] - coord[3]) / (coord[2] - coord[0])
             bottom_slope = (coord[7] - coord[5]) / (coord[4] - coord[6])
             if coord[0] > coord[6]:
@@ -83,13 +82,11 @@ def process_anchors_coords(shape, coords):
                         ymax_temp = max(ymax, ymax - bottom_slope * (x_slice - xmin))
                         xmax = x_slice
                         divided_coords.append([ymin_temp, xmin, ymax_temp, xmax])
-                        # cv2.rectangle(Config.image, (int(xmin), int(ymin_temp)), (int(xmax), int(ymax_temp)), (255,0, 0), 1)
                         ymin = ymin - up_slope * (x_slice - xmin)
                         ymax = ymax - bottom_slope * (x_slice - xmin)
                         xmin = x_slice
                     else:
                         divided_coords.append([min(ymin, coord[3]), xmin, max(ymax, coord[5]), right_side])
-                        # cv2.rectangle(Config.image, (int(xmin), int(min(ymin,coord[3]))), (int(right_side), int(max(ymax,coord[5]))), (255, 0, 0), 1)
                         break
         return divided_coords
 
@@ -149,25 +146,12 @@ def transfer_targets(anchors, coords):
     right_side_mask = np.logical_and((xmax > feat_xmax), (feat_xmax != 0))
     x_side = np.where(right_side_mask, feat_xmax - cx, x_side)
 
-    # print(np.sum(x_side > -Config.model.anchor_width))
     cy_offset = ((feat_ymax + feat_ymin) / 2 - cy) / h
     h_offset = np.log((feat_ymax - feat_ymin) / h)
     side_offset = x_side / Config.model.anchor_width
     coords = np.stack([cy_offset, h_offset], axis=-1)
     coords = coords.astype(np.float32)
     labels = (feat_iou > 0).astype(int)
-
-    # a = np.stack([ymin,xmin,ymax,xmax],-1)
-    # # a = np.stack([feat_ymin, feat_xmin, feat_ymax, feat_xmax], -1)
-    # # rec = np.maximum(a[labels==1],0.0)
-    # rec = a[x_side > -Config.model.anchor_width]
-    #
-    # for r in rec:
-    #     cv2.rectangle(Config.image,(int(r[1]),int(r[0])),(int(r[3]),int(r[2])),(0, 255, 0), 1)
-    #
-    # cv2.imshow('image', Config.image)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
 
     return labels, coords, side_offset
 
@@ -190,7 +174,6 @@ def parse_data(dir, fname):
     # resize image by setting its short side to 600 for training,
     # while keeping its original aspect ratio
     image_data = cv2.resize(image_data, None, None, fx=im_scale, fy=im_scale, interpolation=cv2.INTER_LINEAR)
-    # Config.image = image_data
     resize_shape = list(image_data.shape)
     image_byte = image_data.tostring()
     coords = parse_txt(dir, fname, im_scale)
@@ -341,7 +324,6 @@ def preprocess(serialized):
         image = tf.reshape(image, tf.stack([height, width, 3]))
         coords = tf.decode_raw(parsed_example['coords'], tf.float32)
         coords = tf.reshape(coords, [-1,2])
-        # coords = tf.reshape(coords,tf.stack([parsed_example['tar_height'],parsed_example['tar_width'],10,2]))
         labels = tf.decode_raw(parsed_example['labels'], tf.int64)
         labels = tf.reshape(labels, [-1])
         side = tf.decode_raw(parsed_example['side'], tf.float32)
