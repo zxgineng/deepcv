@@ -99,17 +99,74 @@ class SubConfig:
 
     def __repr__(self):
         return json.dumps(self.__dict__["__dict__"], indent=4)
-
-
+#
+# import math
+#
+# def create_anchors(shape):
+#     num_anchors = len(Config.model.anchor_height)
+#     num_height = math.floor(shape[0] / Config.model.anchor_width)
+#     num_width = math.floor(shape[1] / Config.model.anchor_width)
+#     gridy, gridx = np.mgrid[0:num_height, 0:num_width]
+#     cy = (gridy + 0.5) * Config.model.anchor_width
+#     cx = (gridx + 0.5) * Config.model.anchor_width
+#     cy = np.expand_dims(cy, -1)
+#     cx = np.expand_dims(cx, -1)
+#     w = np.ones(num_anchors, dtype='float32') * Config.model.anchor_width
+#     h = np.array(Config.model.anchor_height, dtype='float32')
+#     return cy, cx, h, w
+#
+# def decode_coords(coords,anchors):
+#     """decode"""
+#     cy, cx, h, w = anchors
+#     new_coords = np.zeros([coords.shape[0],coords.shape[1],coords.shape[2],4])
+#     cy = coords[:,:,:,0] * h + cy
+#     h = np.exp(coords[:,:,:,1]) * h
+#     # [ymin,xmin,ymax,xmax]
+#     new_coords[:,:,:,0] = cy - h/2
+#     new_coords[:,:,:,1] = cx - w/2
+#     new_coords[:,:,:,2] = cy + h/2
+#     new_coords[:,:,:,3] = cx + w/2
+#     return new_coords
+#
+#
 # import cv2
-# import numpy as np
+import numpy as np
 # import matplotlib.pyplot as plt
 #
-# def hook_formatter(values):
-#     # image =values['image']
-#     image = values['image'].astype(np.uint8)
+def hook_formatter(values):
+    pred = values['pred']
+    labels = values['labels']
+    # a = np.array((pred==labels)).sum()
+    return pred.sum()
+#     image = values['image']
+#     image = image + np.array([0.5])
+#     image = image * 255
+#     image = image.astype(np.uint8)
+#     image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
+#     coords = values['coords']
+#     fpmask = values['fpmask']
+#     fnmask = values['fnmask']
+#     nmask = values['nmask']
+#     pmask = values['pmask']
+#     anchors = create_anchors(image.shape)
+#     cy, cx, h, w = anchors
+#     new_coords = np.zeros([coords.shape[0], coords.shape[1], coords.shape[2], 4])
+#     new_coords[:,:,:,0] = cy - h/2
+#     new_coords[:,:,:,1] = cx - w/2
+#     new_coords[:,:,:,2] = cy + h/2
+#     new_coords[:,:,:,3] = cx + w/2
 #
+#     coords = new_coords.reshape(-1,4).astype(int)
+#     pcoords = coords[pmask]
+#     ncoords = coords[nmask]
+#     for coord in pcoords:
+#         cv2.rectangle(image,(coord[1],coord[0]),(coord[3],coord[2]),(0,255,0),1)
+#     for coord in ncoords:
+#         cv2.rectangle(image,(coord[1],coord[0]),(coord[3],coord[2]),(0,0,255),1)
+#     cv2.imshow('image',image)
+#     cv2.waitKey()
+#     cv2.destroyAllWindows()
 #
-#     return image.shape
+#     return 'next'
 
 

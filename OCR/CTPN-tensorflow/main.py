@@ -5,17 +5,17 @@ import math
 
 import data_loader
 from model import Model
-from utils import Config
+from utils import Config,hook_formatter
 
 
 def run(mode, run_config, params):
     model = Model()
-    # ws = tf.estimator.WarmStartSettings(ckpt_to_initialize_from='logs/pretrained/vgg_16.ckpt',vars_to_warm_start='vgg_16.*')
+    ws = tf.estimator.WarmStartSettings(ckpt_to_initialize_from='logs/pretrained/vgg_16.ckpt',vars_to_warm_start='vgg_16.*')
     estimator = tf.estimator.Estimator(
         model_fn=model.model_fn,
         model_dir=Config.train.model_dir,
         params=params,
-        # warm_start_from=ws,
+        warm_start_from=ws,
         config=run_config)
 
     if Config.train.debug:
@@ -24,39 +24,21 @@ def run(mode, run_config, params):
     else:
         hooks = []
 
-    loss_hooks = tf.train.LoggingTensorHook({'total_loss': 'loss/total_loss:0',
+    loss_hooks = tf.train.LoggingTensorHook({'total_loss': 'loss/total_loss',
                                              'xentropy_loss': 'loss/xentropy_loss/truediv:0',
                                              'reg_loss': 'loss/reg_loss/truediv:0',
                                              'side_loss': 'loss/side_loss/truediv:0',
-                                             'step': 'global_step:0'}, every_n_iter=Config.train.check_hook_n_iter)
-    # test_hooks = tf.train.LoggingTensorHook({'weights':'vgg_16/test:0'},every_n_iter=1)
-
+                                             'pred':"loss/ArgMax:0",
+                                             'labels': "Squeeze_2:0",
+                                             'pindex': "loss/TopKV2:1",
+                                             'nindex': "loss/TopKV2_1:1",
+                                             'step': 'global_step:0'}, every_n_iter=Config.train.check_hook_n_iter,formatter=hook_formatter)
 
     if mode == 'train':
         train_data = data_loader.get_tfrecord(mode, shuffle=True)
         train_input_fn, train_input_hook = data_loader.get_dataset_batch(train_data, buffer_size=1000,scope="train")
         hooks.extend([train_input_hook, loss_hooks])
         estimator.train(input_fn=train_input_fn, hooks=hooks, max_steps=Config.train.max_steps)
-
-    elif mode == 'train_and_val':
-        train_data, val_data = data_loader.make_data_set(mode)
-        train_input_fn, train_input_hook = data_loader.get_dataset_batch(train_data, batch_size=Config.model.batch_size,
-                                                                         scope="train")
-        val_input_fn, val_input_hook = data_loader.get_dataset_batch(val_data, batch_size=Config.model.batch_size,
-                                                                     scope="validation")
-        hooks.extend([train_input_hook, loss_hooks])
-        for n in range(math.ceil(Config.train.max_steps / Config.train.min_eval_frequency)):
-            estimator.train(input_fn=train_input_fn, hooks=hooks,
-                            steps=min(Config.train.min_eval_frequency,
-                                      Config.train.max_steps - n * Config.train.min_eval_frequency))
-            estimator.evaluate(input_fn=val_input_fn, hooks=[val_input_hook])
-
-    elif mode == 'test':
-        test_data = data_loader.make_data_set(mode)
-        test_input_fn, test_input_hook = data_loader.get_dataset_batch(test_data, batch_size=Config.model.batch_size,
-                                                                       scope="test")
-        hooks.extend([test_input_hook])
-        estimator.evaluate(input_fn=test_input_fn, hooks=hooks)
 
     else:
         raise ValueError('no %s mode' % (mode))
@@ -68,7 +50,7 @@ def main(mode):
     run_config = tf.estimator.RunConfig(
         model_dir=Config.train.model_dir,
         save_checkpoints_steps=Config.train.save_checkpoints_steps,
-        log_step_count_steps=300)
+        log_step_count_steps=None)
 
     run(mode, run_config, params)
 

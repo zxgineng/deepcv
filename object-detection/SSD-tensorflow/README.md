@@ -20,7 +20,7 @@ TensorFlow implementation of [SSD: Single Shot MultiBox Detector](https://arxiv.
         ├── logs                    # checkpoints
     ├── SSD                     # SSD architecture graphs (from input to logits)
         ├── __init__.py             # Graph logic
-    ├── data_loader.py          # raw_date -> precossed_data -> generate_batch (using Dataset)
+    ├── data_loader.py          # raw_data -> processed_data -> generate_batch (using Dataset)
     ├── main.py                 # train
     ├── predict.py              # predict
     ├── visualization.py        # show result
@@ -103,22 +103,22 @@ predict:
 
 ## Run
 
-Pre-process raw data
+Process raw data
 
 ```
-python data_loader.py --config config/voc2007.yaml
+python data_loader.py --config config/voc2007.yml
 ```
 
 Train
 
 ```
-python main.py --mode train --config config/voc2007.yaml
+python main.py --mode train --config config/voc2007.yml
 ```
 
 Predict  
 [download pretrained model](https://drive.google.com/open?id=163Y-KPK2b4NrU7XHFGj4ESfZpt_3lKaa)
 ```
-python predict.py --config config/voc2007.yaml --file_names image1.jpg image2.jpg ...
+python predict.py --config config/voc2007.yml --file_names image1.jpg image2.jpg ...
 ```
 
 

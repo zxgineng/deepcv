@@ -137,7 +137,7 @@ def transfer_targets(anchors, coords):
     for coord in coords:
         iou = cal_iou(coord)
         max_mask = np.logical_and(iou == np.max(iou), iou > feat_iou)
-        mask = np.logical_and(iou > Config.model.threshold, iou > feat_iou)
+        mask = np.logical_and(iou > Config.data.threshold, iou > feat_iou)
         mask = np.logical_or(max_mask, mask)
         feat_iou = np.where(mask, iou, feat_iou)
         feat_ymin = np.where(mask, coord[0], feat_ymin)
@@ -301,7 +301,7 @@ def get_dataset_batch(data, buffer_size=1000, batch_size=64, scope="train"):
             else:
                 dataset = dataset.repeat(1)  # 1 Epoch
             dataset = dataset.shuffle(buffer_size=buffer_size)
-            # dataset = dataset.batch(batch_size)
+            dataset = dataset.batch(1)
 
             iterator = dataset.make_initializable_iterator()
             next_batch = iterator.get_next()
@@ -341,6 +341,7 @@ def preprocess(serialized):
         image = tf.reshape(image, tf.stack([height, width, 3]))
         coords = tf.decode_raw(parsed_example['coords'], tf.float32)
         coords = tf.reshape(coords, [-1,2])
+        # coords = tf.reshape(coords,tf.stack([parsed_example['tar_height'],parsed_example['tar_width'],10,2]))
         labels = tf.decode_raw(parsed_example['labels'], tf.int64)
         labels = tf.reshape(labels, [-1])
         side = tf.decode_raw(parsed_example['side'], tf.float32)
@@ -363,6 +364,3 @@ if __name__ == '__main__':
     Config(args.config)
 
     create_tfrecord()
-
-
-
