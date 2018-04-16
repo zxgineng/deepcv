@@ -15,7 +15,7 @@ TensorFlow implementation of [Detecting Text in Natural Image with Connectionist
 
     ├── config                  # Config files (.yml)
     ├── data                    # dataset path
-    ├── CTPN                 # CTPN architecture graphs (from input to logits)
+    ├── CTPN                    # CTPN architecture graphs (from input to logits)
         ├── __init__.py             # Graph logic
     ├── data_loader.py          # raw_data -> processed_data -> generate_batch (using Dataset)
     ├── main.py                 # train and evaluate
@@ -77,5 +77,5 @@ python data_loader.py --config config/MLT.yml
 Train
 
 ```
-python main.py --mode train --config config/MLT.yml
+python main.py --config config/MLT.yml
 ```

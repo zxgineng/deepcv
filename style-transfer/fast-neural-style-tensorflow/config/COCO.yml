@@ -1,0 +1,32 @@
+data:
+  style_image: 'images/the_starry_night.jpg'
+  base_path: 'data/COCO'
+  raw_data_path: 'raw_data'
+  processed_path: 'processed_data'
+  samples_per_tfrecord: 1000
+
+model:
+  batch_size: 4
+  image_size: 256
+  content_layers:
+    - "vgg_16/conv3/conv3_3"
+  style_layers:
+    - "vgg_16/conv1/conv1_2"
+    - "vgg_16/conv2/conv2_2"
+    - "vgg_16/conv3/conv3_3"
+    - "vgg_16/conv4/conv4_3"
+  channels_mean: [123.68, 116.78, 103.94]
+  content_weight: 1.0
+  style_weight: 250.0
+  tv_weight: 0.0
+
+train:
+  learning_rate: 0.001
+
+  max_steps: 60000
+  model_dir: 'logs/fast-neural-style-tensorflow/the_starry_night'
+
+  save_checkpoints_steps: 4000
+  check_hook_n_iter: 100
+
+  debug: False

@@ -16,7 +16,7 @@ class Graph:
         return vcoords_logits, scores_logits, side_logits
 
     def build_vgg(self, inputs):
-        with tf.variable_scope('vgg_16', [inputs]):
+        with tf.variable_scope('vgg_16'):
             net = slim.repeat(inputs, 2, slim.conv2d, 64, [3, 3], scope='conv1')
             net = slim.max_pool2d(net, [2, 2], scope='pool1')
             net = slim.repeat(net, 2, slim.conv2d, 128, [3, 3], scope='conv2')
@@ -29,7 +29,7 @@ class Graph:
             return net
 
     def build_bilstm(self, inputs):
-        with tf.variable_scope('bilstm', [inputs]):
+        with tf.variable_scope('bilstm'):
             lstm_cell_fw = tf.nn.rnn_cell.LSTMCell(Config.model.lstm_unit,initializer=tf.orthogonal_initializer)
             lstm_cell_bw = tf.nn.rnn_cell.LSTMCell(Config.model.lstm_unit,initializer=tf.orthogonal_initializer)
             lstm_outputs, output_states = tf.nn.bidirectional_dynamic_rnn(lstm_cell_fw, lstm_cell_bw, inputs,
@@ -38,7 +38,7 @@ class Graph:
             return lstm_outputs
 
     def build_fc(self, inputs):
-        with tf.variable_scope('fully_connected', [inputs]):
+        with tf.variable_scope('fully_connected'):
             fc = slim.fully_connected(inputs, Config.model.fc_unit)
             vcoords_logits = slim.fully_connected(fc, 2 * len(Config.model.anchor_height), activation_fn=None)
             vcoords_logits = tf.reshape(vcoords_logits,[-1,2])
