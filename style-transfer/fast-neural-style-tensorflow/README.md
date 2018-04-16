@@ -79,7 +79,8 @@ Train
 python main.py --config config/COCO.yml
 ```
 
-Predict
+Predict  
+[download pretrained model](https://drive.google.com/open?id=13ZdkKFecot9BJ3cQKS9OIbRxyY-lgcK_)
 
 ```
 python predict.py --config config/COCO.yml --file xxx1.jpg xxx2.jpg
