@@ -1,0 +1,23 @@
+data:
+  base_path: 'data/'
+  data_path: 'facades/'
+  image_direction: 'BtoA'
+
+model:
+  base_generator_filter: 64
+  base_discriminator_filter: 64
+  image_size: 256
+  l1_weight: 100.0
+
+train:
+  batch_size: 4
+  epoch: 300
+  model_dir: 'logs/pix2pix'
+  learning_rate: 0.0002
+  beta1: 0.5
+  G_step: 1
+
+  save_checkpoints_steps: 1000
+  check_hook_n_iter: 100
+
+  debug: False

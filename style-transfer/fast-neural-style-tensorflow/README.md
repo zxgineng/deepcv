@@ -6,7 +6,7 @@ TensorFlow implementation of [Perceptual Losses for Real-Time Style Transferand 
 
 ## Requirements
 
-- Python 3.6
+- Python 3
 - TensorFlow 1.6
 
 
