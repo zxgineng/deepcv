@@ -1,7 +1,8 @@
 import tensorflow as tf
 
 from utils import Config
-import architecture
+from network import Generator_Graph
+from network import Discriminator_Graph
 
 
 class Model:
@@ -11,7 +12,7 @@ class Model:
         self._build_optimizer()
 
     def generator_fn(self, contours, mode):
-        graph = architecture.Generator_Graph(mode)
+        graph = Generator_Graph(mode)
         outputs = graph.build(contours)
         images = tf.image.convert_image_dtype(outputs/2 + 0.5,tf.uint8,name='generated_images')
         tf.summary.image('generated_images',images,max_outputs=4)
@@ -23,7 +24,7 @@ class Model:
 
 
     def discriminator_fn(self, images, contours):
-        graph = architecture.Discriminator_Graph()
+        graph = Discriminator_Graph()
         logits = graph.build(images, contours)
         return logits
 

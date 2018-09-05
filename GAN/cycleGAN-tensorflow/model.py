@@ -2,7 +2,8 @@ import tensorflow as tf
 import numpy as np
 
 from utils import Config
-import architecture
+from network import GeneratorGraph
+from network import DiscriminatorGraph
 
 
 class Model:
@@ -34,14 +35,14 @@ class Model:
         if self.mode == tf.estimator.ModeKeys.PREDICT:
             if Config.predict.model not in ['G', 'F']:
                 raise ValueError('Config.predict.model must be G or F')
-            generator = architecture.GeneratorGraph(self.mode, Config.predict.model)
+            generator = GeneratorGraph(self.mode, Config.predict.model)
             gen_images = generator.build(self.imageX)
             images = tf.image.convert_image_dtype(gen_images / 2 + 0.5, tf.uint8, name='generated_images')
             self.predictions = images
 
         else:
-            G = architecture.GeneratorGraph(self.mode, 'G')
-            F = architecture.GeneratorGraph(self.mode, 'F')
+            G = GeneratorGraph(self.mode, 'G')
+            F = GeneratorGraph(self.mode, 'F')
             fake_Y = G.build(self.imageX)  # X->Y
             fake_X = F.build(self.imageY)  # Y->X
             cycle_X = F.build(fake_Y)  # fake_Y->X
@@ -51,11 +52,11 @@ class Model:
             fake_Y_buffer = tf.placeholder(tf.float32, [None, Config.model.image_size, Config.model.image_size, 3],
                                            'fake_Y_buffer')
 
-            D_X = architecture.DiscriminatorGraph('D_X')
+            D_X = DiscriminatorGraph('D_X')
             D_X_real = D_X.build(self.imageX)
             D_X_fake = D_X.build(fake_X)
             D_X_fake_buffer = D_X.build(fake_X_buffer)
-            D_Y = architecture.DiscriminatorGraph('D_Y')
+            D_Y = DiscriminatorGraph('D_Y')
             D_Y_real = D_Y.build(self.imageY)
             D_Y_fake = D_Y.build(fake_Y)
             D_Y_fake_buffer = D_Y.build(fake_Y_buffer)

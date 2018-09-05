@@ -15,8 +15,7 @@ TensorFlow implementation of [Image-to-Image Translation Using Conditional Adver
 
     ├── config                  # Config files (.yml)
     ├── data                    # dataset path
-    ├── architecture            # architecture graphs
-        ├── __init__.py             # Graph logic
+    ├── network                 # define network
     ├── data_loader.py          # raw_data -> processed_data -> generate_batch
     ├── main.py                 # train and evaluate
     ├── utils.py                # config tools 

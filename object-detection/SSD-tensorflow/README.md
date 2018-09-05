@@ -18,8 +18,7 @@ TensorFlow implementation of [SSD: Single Shot MultiBox Detector](https://arxiv.
     ├── config                  # Config files (.yml)
     ├── data                    # dataset path
         ├── logs                    # checkpoints
-    ├── SSD                     # SSD architecture graphs (from input to logits)
-        ├── __init__.py             # Graph logic
+    ├── network                 # define network
     ├── data_loader.py          # raw_data -> processed_data -> generate_batch (using Dataset)
     ├── main.py                 # train
     ├── predict.py              # predict

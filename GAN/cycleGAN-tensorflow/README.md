@@ -15,8 +15,7 @@ TensorFlow implementation of [Unpaired Image-to-Image Translation using Cycle-Co
 
     ├── config                  # Config files (.yml)
     ├── data                    # dataset path
-    ├── architecture            # architecture graphs
-        ├── __init__.py             # Network
+    ├── network                 # define network
     ├── data_loader.py          # raw_data -> processed_data -> generate_batch
     ├── main.py                 # train and evaluate
     ├── utils.py                # config tools 

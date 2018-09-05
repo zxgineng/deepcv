@@ -1,4 +1,4 @@
-import SSD
+from network import Graph
 import tensorflow as tf
 from tensorflow.contrib import slim
 from utils import Config
@@ -28,7 +28,7 @@ class Model:
             predictions=self.predictions)
 
     def build_graph(self):
-        graph = SSD.Graph(self.mode)
+        graph = Graph(self.mode)
         logits, locs, softmax_logits = graph.build(self.inputs)
 
         softmax_logits_dict = OrderedDict({f'softmax_feat{n+1}': softmax_logits[n] for n in range(len(softmax_logits))})
